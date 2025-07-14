@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submission</title>
+</head>
+<body>
+    <h1>Submission for {{ .Submission.Template.Name }}</h1>
+    <ul>
+    {{ range $key, $value := .Values }}
+        <li><strong>{{ $key }}:</strong> {{ $value }}</li>
+    {{ end }}
+    </ul>
+</body>
+</html>

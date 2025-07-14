@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Submission</title>
+</head>
+<body>
+    <h1>New Submission for {{ .Template.Name }}</h1>
+    <form action="/templates/{{ .Template.ID }}/submissions" method="post">
+        {{ range .Template.Fields }}
+        <label for="{{ .Name }}">{{ .Name }}:</label><br>
+        <input type="text" id="{{ .Name }}" name="{{ .Name }}"><br>
+        {{ end }}
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

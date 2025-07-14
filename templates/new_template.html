@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Template</title>
+</head>
+<body>
+    <h1>New Template</h1>
+    <form action="/templates" method="post">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="content">Content:</label><br>
+        <textarea id="content" name="content"></textarea><br>
+        <h2>Fields</h2>
+        <div id="fields">
+            <div class="field">
+                <label for="field_name_0">Name:</label>
+                <input type="text" id="field_name_0" name="Fields[0][Name]">
+                <label for="field_type_0">Type:</label>
+                <input type="text" id="field_type_0" name="Fields[0][Type]">
+            </div>
+        </div>
+        <button type="button" onclick="addField()">Add Field</button>
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        let fieldIndex = 1;
+        function addField() {
+            const fields = document.getElementById('fields');
+            const newField = document.createElement('div');
+            newField.classList.add('field');
+            newField.innerHTML = `
+                <label for="field_name_${fieldIndex}">Name:</label>
+                <input type="text" id="field_name_${fieldIndex}" name="Fields[${fieldIndex}][Name]">
+                <label for="field_type_${fieldIndex}">Type:</label>
+                <input type="text" id="field_type_${fieldIndex}" name="Fields[${fieldIndex}][Type]">
+            `;
+            fields.appendChild(newField);
+            fieldIndex++;
+        }
+    </script>
+</body>
+</html>

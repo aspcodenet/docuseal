@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Templates</title>
+</head>
+<body>
+    <h1>Templates</h1>
+    <ul>
+        {{ range .Templates }}
+        <li><a href="/templates/{{ .ID }}">{{ .Name }}</a></li>
+        {{ end }}
+    </ul>
+    <a href="/templates/new">New Template</a>
+</body>
+</html>
