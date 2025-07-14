@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+</head>
+<body>
+    <h1>Profile</h1>
+    <form action="/profile" method="post">
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" value="{{ .User.Email }}"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br>
+        <input type="submit" value="Update">
+    </form>
+</body>
+</html>

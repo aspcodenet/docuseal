@@ -1,22 +1,35 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/user/repo/handlers"
+	"github.com/user/repo/jobs"
 	"github.com/user/repo/middleware"
 	"github.com/user/repo/models"
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 func main() {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_NAME"),
+	)
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
 
 	// Migrate the schema
 	db.AutoMigrate(&models.User{}, &models.Template{}, &models.Submission{}, &models.Field{}, &models.AccessToken{})
+
+	jobs.Start()
 
 	r := gin.Default()
 
@@ -27,6 +40,7 @@ func main() {
 	})
 
 	r.LoadHTMLGlob("templates/*")
+	r.GET("/", handlers.Landing)
 	r.GET("/ping", handlers.Ping)
 	r.POST("/users", handlers.CreateUser)
 	r.POST("/login", handlers.Login)
@@ -46,6 +60,9 @@ func main() {
 		authRequired.GET("/templates/:id/submissions/new", handlers.NewSubmission)
 		authRequired.POST("/templates/:id/submissions", handlers.CreateSubmission)
 		authRequired.GET("/submissions/:id", handlers.GetSubmission)
+
+		authRequired.GET("/profile", handlers.GetProfile)
+		authRequired.POST("/profile", handlers.UpdateProfile)
 	}
 
 	api := r.Group("/api")
